@@ -1,0 +1,132 @@
+version: "3.8"
+
+services:
+  # messenger-server:
+  #   build: 
+  #     context: .
+  #     dockerfile: Dockerfile
+  #     target: 'development'
+  #   image: ifrs/messenger-server
+  #   container_name: messenger-server
+  #   ports:
+  #     - 8302:8302
+  #   restart: always
+  #   networks:
+  #      - messenger-server-net
+  #   env_file:
+  #     - .env.${NODE_ENV}    
+
+  # messenger-database:
+  #   image: postgres
+  #   container_name: messenger-database
+  #   ports: 
+  #    - 8303:5432
+  #   restart: always
+  #   volumes:
+  #    - pgdata:/var/lib/postgresql/data
+  #    - ./docker_postgres_init.sh:/docker-entrypoint-initdb.d/docker_postgres_init.sh
+  #   env_file:
+  #     - .env.${NODE_ENV}
+  #   networks:
+  #    - messenger-server-net
+  #   stdin_open: true
+  #   expose:
+  #     - '8303'
+
+  messenger-mongo1:
+    image: mongo
+    container_name: messenger-mongo1
+    restart: always
+    volumes:
+      - ~/mongors/data1:/data/db
+      - ./scripts/rs-init.sh:/scripts/rs-init.sh
+      - ./scripts/init.js:/scripts/init.js
+      # - ./scripts/keyfile:/scripts/keyfile
+    links:
+      - messenger-mongo2
+      - messenger-mongo3
+    expose:
+      - 27017
+    ports:
+       - 27017:27017
+    networks:
+      - messenger-server-net
+    environment:
+      MONGO_INITDB_DATABASE: messenger
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
+    # ,  "--keyFile", "/scripts/keyfile"]
+
+  messenger-mongo2:
+    image: mongo
+    container_name: messenger-mongo2
+    restart: always
+    volumes:
+      - ~/mongors/data2:/data/db
+      # - ./scripts/keyfile:/scripts/keyfile
+    expose:
+      - 27017
+    ports:
+       - 27018:27017
+    networks:
+      - messenger-server-net
+    environment:
+      MONGO_INITDB_DATABASE: messenger
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
+    # ,  "--keyFile", "/scripts/keyfile"]
+
+  messenger-mongo3:
+    image: mongo
+    container_name: messenger-mongo3
+    restart: always
+    volumes:
+      - ~/mongors/data3:/data/db
+      # - ./scripts/keyfile:/scripts/keyfile
+    expose:
+      - 27017
+    ports:
+       - 27019:27017
+    networks:
+      - messenger-server-net
+    environment:
+      MONGO_INITDB_DATABASE: messenger
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs"]
+    # ,  "--keyFile", "/scripts/keyfile"]
+
+  # messenger-mongodb:
+  #   image: mongo
+  #   hostname: messenger-mongodb
+  #   restart: always
+  #   container_name: messenger-mongodb
+  #   volumes:
+  #     - ~/mongors/data:/data/db
+  #     - ./scripts/rs-init.sh:/scripts/rs-init.sh
+  #     - ./scripts/init.js:/scripts/init.js
+  #   ports:
+  #     - 27017:27017
+  #   networks:
+  #     - messenger-server-net
+  #   environment:
+  #     MONGO_INITDB_DATABASE: messenger
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: root
+  #     MONGO_REPLICA_SET_NAME: dbrs
+  #   healthcheck:
+  #     test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u mongo -p mongo --quiet) -eq 1
+  #     interval: 10s
+  #     start_period: 30s
+  #   command: ["--replSet", "dbrs", "--bind_ip_all", "--keyFile", "/data/replica.key"]
+
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  messenger-server-net:
+    driver: bridge

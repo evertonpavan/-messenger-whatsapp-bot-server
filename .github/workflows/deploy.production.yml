@@ -1,0 +1,68 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Deploy CI Production
+
+on:
+  push:
+    branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
+
+
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Dependencies
+      run: yarn 
+      
+    - name: Build
+      run: yarn build
+
+    - name: Executing commands into server
+      uses: appleboy/ssh-action@master
+      env:
+        TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+        NODE_ENV: ${{ secrets.NODE_ENV }}
+        POSTGRES_USERNAME: ${{ secrets.POSTGRES_USERNAME }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        APP_PORT: ${{ secrets.APP_PORT }}
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        envs: TOKEN_GITHUB, NODE_ENV, POSTGRES_USERNAME, POSTGRES_PASSWORD, POSTGRES_DB, DATABASE_URL, APP_PORT
+        script: |
+          mkdir /projetos/portaria-server
+          cd /projetos/portaria-server
+          git init
+          git pull https://$TOKEN_GITHUB@github.com/ifrs-sertao/portaria-server.git main
+          # rm .env*
+          echo NODE_ENV=$NODE_ENV >> .env
+          echo APP_PORT=$APP_PORT >> .env.production
+          echo POSTGRES_USERNAME=$POSTGRES_USERNAME >> .env.production
+          echo POSTGRES_PASSWORD=$POSTGRES_PASSWORD >> .env.production
+          echo POSTGRES_DB=$POSTGRES_DB >> .env.production
+          echo DATABASE_URL=$DATABASE_URL >> .env.production
+          cat .env.production
+          docker image rm ifrs/portaria-server:latest --force
+          docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --force-recreate

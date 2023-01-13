@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  messenger-server:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: 'production'
+    networks:
+      - traefik-net
+      - messenger-server-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.messengerserver.rule=Host(`messengerserver.sertao.ifrs.edu.br`)"
+      - "traefik.http.services.messengerserver.loadbalancer.server.port=8302"
+      - "traefik.http.routers.messengerserver.entrypoints=websecure"
+      - "traefik.http.routers.messengerserver.tls"
+
+  portaria-database:
+    networks:
+      - traefik-net
+      - messenger-server-net
+      
+networks:
+  traefik-net:
+     external: true
+  messenger-server-net:

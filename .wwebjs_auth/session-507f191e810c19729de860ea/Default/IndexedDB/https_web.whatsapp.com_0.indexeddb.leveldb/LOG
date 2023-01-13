@@ -1,0 +1,31 @@
+2023/01/12-13:50:03.175 154928 Creating DB /home/everton/Documentos/desenvolvimento/ifrs/messenger-sever/.wwebjs_auth/session-507f191e810c19729de860ea/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
+2023/01/12-13:50:03.179 154928 Reusing MANIFEST /home/everton/Documentos/desenvolvimento/ifrs/messenger-sever/.wwebjs_auth/session-507f191e810c19729de860ea/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/01/12-13:50:03.664 15492b Level-0 table #5: started
+2023/01/12-13:50:03.667 15492b Level-0 table #5: 7003 bytes OK
+2023/01/12-13:50:03.670 15492b Delete type=0 #3
+2023/01/12-13:50:03.670 15492b Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/01/12-13:50:33.775 154977 Level-0 table #7: started
+2023/01/12-13:50:33.855 154977 Level-0 table #7: 1126114 bytes OK
+2023/01/12-13:50:33.861 154977 Delete type=0 #4
+2023/01/12-13:50:37.873 154977 Level-0 table #9: started
+2023/01/12-13:50:37.931 154977 Level-0 table #9: 1118359 bytes OK
+2023/01/12-13:50:37.946 154977 Delete type=0 #6
+2023/01/12-13:50:38.004 154978 Compacting 1@0 + 1@1 files
+2023/01/12-13:50:38.265 154978 Generated table #10@0: 41029 keys, 1504400 bytes
+2023/01/12-13:50:38.265 154978 Compacted 1@0 + 1@1 files => 1504400 bytes
+2023/01/12-13:50:38.267 154978 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/01/12-13:50:38.267 154978 Delete type=2 #7
+2023/01/12-13:50:38.267 154978 Delete type=2 #9
+2023/01/12-13:50:52.710 154929 Compacting 1@1 + 1@2 files
+2023/01/12-13:50:52.898 154929 Generated table #11@1: 16595 keys, 1305106 bytes
+2023/01/12-13:50:52.898 154929 Compacted 1@1 + 1@2 files => 1305106 bytes
+2023/01/12-13:50:52.903 154929 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/01/12-13:50:56.935 154977 Level-0 table #13: started
+2023/01/12-13:50:57.050 154977 Level-0 table #13: 1149630 bytes OK
+2023/01/12-13:50:57.054 154977 Delete type=0 #8
+2023/01/12-13:50:57.054 154977 Delete type=2 #5
+2023/01/12-13:50:57.054 154977 Delete type=2 #10
+2023/01/12-13:50:57.145 154978 Compacting 1@1 + 1@2 files
+2023/01/12-13:50:57.339 154978 Generated table #14@1: 29964 keys, 1848305 bytes
+2023/01/12-13:50:57.339 154978 Compacted 1@1 + 1@2 files => 1848305 bytes
+2023/01/12-13:50:57.341 154978 compacted to: files[ 0 0 1 0 0 0 0 ]
