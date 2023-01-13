@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { IWhatsappRepository } from "../../repositories/i-whatsapp-repository";
 import { AppError } from "../../../../shared/errors/AppError";
-import { Client, RemoteAuth, LocalAuth, LegacySessionAuth } from 'whatsapp-web.js';
+import { Client, RemoteAuth, LocalAuth, LegacySessionAuth, NoAuth } from 'whatsapp-web.js';
 import { minimal_args } from "../../../../shared/helpers/web-whatsapp";
 import qrcode from 'qrcode-terminal';
 import fs from 'node:fs';
@@ -34,9 +34,10 @@ class GenerateQRCodeUseCase {
                     args: minimal_args,
                 },
                 qrMaxRetries: 10,
-                authStrategy: new LocalAuth({
-                    clientId: clientId
-                }),
+                authStrategy: new NoAuth()
+                // authStrategy: new LocalAuth({
+                //     clientId: clientId
+                // }),
             })
 
             webClientIns.initialize();

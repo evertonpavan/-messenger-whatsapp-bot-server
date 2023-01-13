@@ -2,18 +2,24 @@ import Websocket from "../../../shared/infra/websocket/websocket";
 
 class MessagesService {
 
-    public insertOrder(message: any) {
-        //save in your database
+    public sendQrCode({ qrCode }: any) {
 
-        console.log(message);
-
-        //send the update to the browser
-        this.updateSockets(message);
+        this.responseQrCode(qrCode);
     }
 
-    private updateSockets(message: any) {
+    private responseQrCode(qrCode: string) {
         const io = Websocket.getInstance();
-        io.of('messages').emit('orders_updated', { data: [message] });
+        io.of('messages').emit('qrCode', { qrCode });
+    }
+
+    public sendConnectionStatus({ connectionStatus }: any) {
+
+        this.responseConnectionStatus(connectionStatus);
+    }
+
+    private responseConnectionStatus(connectionStatus: boolean) {
+        const io = Websocket.getInstance();
+        io.of('messages').emit('connectionStatus', { connectionStatus });
     }
 }
 
