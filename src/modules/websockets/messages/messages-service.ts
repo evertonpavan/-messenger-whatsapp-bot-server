@@ -4,20 +4,20 @@ class MessagesService {
 
     public sendQrCode({ qrCode }: any) {
 
-        this.responseQrCode(qrCode);
+        this._sendQrCode(qrCode);
     }
 
-    private responseQrCode(qrCode: string) {
+    private _sendQrCode(qrCode: string) {
         const io = Websocket.getInstance();
         io.of('messages').emit('qrCode', { qrCode });
     }
 
     public sendConnectionStatus({ connectionStatus }: any) {
 
-        this.responseConnectionStatus(connectionStatus);
+        this._sendConnectionStatus(connectionStatus);
     }
 
-    private responseConnectionStatus(connectionStatus: boolean) {
+    private _sendConnectionStatus(connectionStatus: boolean) {
         const io = Websocket.getInstance();
         io.of('messages').emit('connectionStatus', { connectionStatus });
     }

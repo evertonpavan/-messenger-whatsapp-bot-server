@@ -101,6 +101,7 @@ class SendMessagesUseCase {
             const response = await new Promise(async (resolve, _reject) => {
 
                 var sent = 0;
+                var failed = 0;
 
                 await Promise.all(contatos.map(async (contato: string) => {
 
@@ -113,12 +114,12 @@ class SendMessagesUseCase {
                                 console.log('log: ' + JSON.stringify(log));
                                 sent++;
                                 resolve()
-                                // refetch();
                             }, 2000);
                         });
 
                     } catch (error) {
                         console.log('error: ' + error)
+                        failed++;
                     }
                 }))
 
@@ -136,9 +137,7 @@ class SendMessagesUseCase {
             }).catch(() => { return false })
 
 
-            return {
-                response
-            }
+            return response
         }
 
 
