@@ -2,7 +2,6 @@ import { injectable } from "tsyringe";
 import { Client } from "whatsapp-web.js";
 import { AppError } from "../../../../shared/errors/AppError";
 import { minimal_args } from "../../../../shared/helpers/web-whatsapp";
-import { createClient } from "../../../sessions/createSession";
 import { MessagesService } from "../../../websockets/messages/messages-service";
 import { ISendMessagesRequestDTO } from "./i-send-messages-request-dto";
 
@@ -27,9 +26,6 @@ class SendMessagesUseCase {
                 args: minimal_args,
             },
             qrMaxRetries: 10,
-            // authStrategy: new LocalAuth({
-            //     clientId: clientId
-            // }),
         })
 
         webWhatsappClient.initialize();

@@ -6,12 +6,13 @@ import { ensureAuthenticate } from "../shared/infra/http/middlewares/ensureAuthe
 
 const passwordRoutes = Router();
 
-// const sendForgotPasswordMailController = new SendForgotPasswordMailController();
 const resetPasswordUserController = new ResetPasswordUserController;
 const changePasswordUserController = new ChangePasswordUserController;
 
-
+// TO DO:
+// const sendForgotPasswordMailController = new SendForgotPasswordMailController();
 // passwordRoutes.post("/forgot", sendForgotPasswordMailController.handle);
+
 passwordRoutes.post("/reset", resetPasswordUserController.handle);
 passwordRoutes.post("/change", ensureAuthenticate, changePasswordUserController.handle);
 

@@ -14,11 +14,13 @@ import { router } from "../../../routes";
 import { AppError } from "../../errors/AppError";
 import http from "http";
 
-import connectDB from "../../../config/database";
-
 import Websocket from './../websocket/websocket';
-import { Server } from "socket.io";
 import MessagesSocket from "../websocket/messages.socket";
+
+import swaggerUi from 'swagger-ui-express';
+
+// TO DO:
+import swaggerFile from '../../../../swagger_output.json';
 
 const app = express();
 
@@ -49,24 +51,16 @@ app.use(
         });
     }
 );
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
 var server = http.createServer(app);
 const io = Websocket.getInstance(server);
-// const io = new Server(server, {
-//     cors: {
-//         origin: "*",
-//         methods: ["GET", "POST"],
-//     },
-// });
-
-// io.on("connection", (socket) => {
-//     console.log("We are live and connected");
-//     console.log(socket.id);
-// });
 
 io.initializeHandlers([
     { path: '/messages', handler: new MessagesSocket() }
 ]);
 
 export {
-    server, connectDB, io
+    server, io
 };

@@ -12,6 +12,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,   
     // "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true                         /* Skip type checking all .d.ts files. */
+    "allowSyntheticDefaultImports": true   ,
+    "emitDecoratorMetadata": true                     /* Skip type checking all .d.ts files. */
   }
 }

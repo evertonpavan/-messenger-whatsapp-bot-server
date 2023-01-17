@@ -1,5 +1,3 @@
-import { LocalAuth } from "whatsapp-web.js";
-
 const minimal_args = [
     '--autoplay-policy=user-gesture-required',
     '--disable-background-networking',
