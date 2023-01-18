@@ -32,49 +32,48 @@ class SendMessagesUseCase {
 
         console.log('gerando qr code...');
 
-        var count = 0;
+        // var count = 0;
 
         const qrCode = await new Promise(async (resolve, reject) => {
 
             var qrCodeGenerated: any = new Promise(async (resolve, reject) => {
 
-                if (count === 0) {
-                    webWhatsappClient.once('qr', (qr: unknown) => {
-                        // console.log('qr', qr)
-                        // console.log('count', count)
-                        count++;
-                        resolve(qr)
-                    });
-                    setTimeout(() => {
-                        reject(false);
-                    }, timeout_generate_qrcode)
-                }
+                // if (count === 0) {
+                webWhatsappClient.once('qr', (qr: unknown) => {
+                    // console.log('qr', qr)
+                    // console.log('count', count)
+                    // count++;
+                    // reject({ message: 'QR Code cannot be generated.' }); // for testing
+                    resolve({ qrCode: qr })
+                });
+                setTimeout(() => {
+                    reject(false);
+                }, timeout_generate_qrcode)
+                // }
             }).then(data => {
                 // console.log('data', data)
                 return data
-            }).catch(() => { return false })
+            }).catch((error) => { return error })
 
             resolve(qrCodeGenerated)
 
         }).then(data => {
             // console.log('data', data)
             return data
-        }).catch(() => { return false })
+        }).catch((error) => { return error })
 
-        if (!qrCode) {
-            throw new AppError('QR Code não pode ser gerado.')
-        }
+        // if (!qrCode) {
+        //     throw new AppError('QR Code cannot be generated.')
+        // }
 
         let messagesService = new MessagesService();
         messagesService.sendQrCode({ qrCode })
 
         const connectionStatus: any = await new Promise(async (resolve, _reject) => {
 
-            console.log('CheckAuthenticationUseCase client', webWhatsappClient)
-
             webWhatsappClient.on('ready', async () => {
                 await webWhatsappClient.getState().then((data: any) => {
-                    console.log('checking if sessions is connected...', data)
+                    console.log('checking if connected...', data)
                     if (data === 'CONNECTED') {
                         resolve(true);
                         return true

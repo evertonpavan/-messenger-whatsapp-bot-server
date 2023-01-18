@@ -8,6 +8,7 @@ class MessagesService {
     }
 
     private _sendQrCode(qrCode: string) {
+
         const io = Websocket.getInstance();
         io.of('messages').emit('qrCode', { qrCode });
     }
@@ -18,6 +19,7 @@ class MessagesService {
     }
 
     private _sendConnectionStatus(connectionStatus: boolean) {
+
         const io = Websocket.getInstance();
         io.of('messages').emit('connectionStatus', { connectionStatus });
     }
