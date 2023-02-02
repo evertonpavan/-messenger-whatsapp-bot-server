@@ -1,27 +1,38 @@
 import Websocket from "../../../shared/infra/websocket/websocket";
 
+interface ISendQrCode {
+    qrCode: string;
+    session: string;
+}
+
+interface ISendConnectionStatus {
+    connectionStatus: boolean;
+    session: string;
+}
+
 class MessagesService {
+    public sendQrCode({ qrCode, session }: ISendQrCode) {
 
-    public sendQrCode({ qrCode }: any) {
-
-        this._sendQrCode(qrCode);
+        this._sendQrCode({ qrCode, session });
     }
 
-    private _sendQrCode(qrCode: string) {
+    private async _sendQrCode({ qrCode, session }: ISendQrCode) {
 
         const io = Websocket.getInstance();
-        io.of('messages').emit('qrCode', { qrCode });
+
+        io.of('messages').to(session).emit('qrCode', { qrCode });
     }
 
-    public sendConnectionStatus({ connectionStatus }: any) {
+    public sendConnectionStatus({ connectionStatus, session }: ISendConnectionStatus) {
 
-        this._sendConnectionStatus(connectionStatus);
+        this._sendConnectionStatus({ connectionStatus, session });
     }
 
-    private _sendConnectionStatus(connectionStatus: boolean) {
+    private _sendConnectionStatus({ connectionStatus, session }: ISendConnectionStatus) {
 
         const io = Websocket.getInstance();
-        io.of('messages').emit('connectionStatus', { connectionStatus });
+
+        io.of('messages').to(session).emit('connectionStatus', { connectionStatus });
     }
 }
 

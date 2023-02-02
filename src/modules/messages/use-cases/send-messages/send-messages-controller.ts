@@ -8,11 +8,11 @@ class SendMessagesController {
 
         const { id } = request.user;
 
-        const { unidade, mensagem, contatos } = request.body
+        const { sessionId, message, contacts } = request.body
 
         const sendMessagesUseCase = container.resolve(SendMessagesUseCase);
 
-        const data = await sendMessagesUseCase.execute({ id, unidade, mensagem, contatos });
+        const data = await sendMessagesUseCase.execute({ id, sessionId, message, contacts });
 
         return response.status(200).send(data);
     }

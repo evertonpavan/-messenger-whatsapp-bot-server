@@ -13,7 +13,7 @@ class Websocket extends Server {
     constructor(httpServer: any) {
         super(httpServer, {
             cors: WEBSOCKET_CORS,
-            transports: ['polling'],
+            transports: ['polling', 'websocket'],
         });
     }
 
@@ -24,7 +24,6 @@ class Websocket extends Server {
         }
 
         return Websocket.io;
-
     }
 
     public initializeHandlers(socketHandlers: Array<any>) {
